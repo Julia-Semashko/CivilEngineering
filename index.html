@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Latest compiled and minified CSS -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+
+        <title>Free Shear and Moment Diagram Calculator</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF-8">
+        <script type="text/javascript" src="https://raw.github.com/makeusabrew/bootbox/v2.4.2/bootbox.min.js"></script>
+
+
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.4/jsxgraphcore.js"></script>
+        <script type="text/javascript" src="/js/engine.js"></script>
+
+        <style>
+            .jxgbox {
+                /* for IE 7 */
+                position: relative;
+                overflow: hidden;
+                background-color: #ffffff;
+                border-style: solid;
+                border-width: 200px;
+                border-color: #356AA0;
+                border-radius: 10px;
+                -webkit-border-radius: 10px;
+                -ms-touch-action: none;
+            }
+            .JXGtext {
+                /* May produce artefacts in IE. Solution: setting a color explicitly. */
+                background-color: transparent;
+                font-family: Arial, Helvetica, Geneva, sans-serif;
+                padding: 0;
+                margin: 0;
+            }
+            .JXGinfobox {
+                border-style: none;
+                border-width: 20px;
+                border-color: black;
+            }
+
+
+            .JXGimage {
+                opacity: 0.1;
+            }
+
+            .jumbotron {
+                padding: 0.5em 0.6em;
+                h1 {
+                    font-size: 2em;
+                }
+                p {
+                    font-size: 1.2em;
+                    .btn {
+                        padding: 0.5em;
+                    }
+                }
+            }
+
+            .JXGimageHighlight {
+                opacity: 0.5;
+            }
+            #jxgbox1, #jxgbox2 {width:700px; height:600px;}
+            #jxgbox {width:700px; height:300px;}
+            #jxgbox32{width:700px; height:100px;}
+        </style>   
+    </head>
+    <body>
+        
+          
+        
+        <div class="container">
+            
+            <div class="jumbotron">
+                <h3>Shear and Moment Diagram Graphing </h3>
+                <p>Demonstration of shear and moment diagrams for beams with two supports</p>
+                
+            
+            </div> 
+            
+
+
+
+
+ <div class="row">
+     <div class="col-sm-8"></div>
+  <div class="col-sm-2">Units of Force: <form >
+  <select name="unitsForce" id ="unitsForce">
+    <option value="kN">kN</option>
+    <option value="N">N</option>
+    <option value="lb">lb</option>
+    <option value="kip">kip</option>
+  </select>
+</form></div>
+  <div class="col-sm-2" >Units of length: <form >
+  <select name="unitsLength" id="unitsLength">
+    <option value="m">m</option>
+    <option value="mm">mm</option>
+    <option value="in">in</option>
+    <option value="ft">ft</option>
+  </select>
+</form></div>
+  
+</div>
+
+
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="container">
+                        
+
+                        <!-- Trigger the modal with a button -->
+                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add Beam</button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Please enter information about the beam</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id = "beamForm">
+
+                                            Length of beam <input type="number" name="beamlength" id="beamlength" min="1" max="1000" required ><br>
+                                            Support locations:<br>
+                                            Location of left support: <input type="number" name="support1" id="support1" min="1" max="1000" required ><br>
+                                            Location of right support:<input type="number" name="support2" id="support2" min="1" max="1000" required><br>   
+                                        </form>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default"  id ="beamButton" data-dismiss="modal">Add Beam</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <br>
+                    <div class="container">
+
+                        <!-- Trigger the modal with a button -->
+                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal1">Add Force</button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal1" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Please enter information about the force</h4>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <div class="multi-field-wrapper">
+                                            <div class="multi-fields">
+                                                <div class="multi-field">
+                                                    <br>
+                                                    <form class = "dataConcentrated">
+
+                                                        Force Magnitude: <input type="number" name="forceMag" min="-10000" max="100000" ><br>
+                                                        Force Location: <input type="number" name="forceLoc" min="1" max="100000" ><br>
+                                                        Force Angle : <input type="number" name="forceAng" min="1" max="180" >
+
+                                                        <button type="button" class="add-field">Add Force</button>
+
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default"  id ="forcesButton" data-dismiss="modal">Add Forces</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <br>
+                    <div class="container">
+
+                        <!-- Trigger the modal with a button -->
+                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2">Add Moment</button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal2" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Please enter information about the moments</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="multi-field-wrapper">
+                                            <div class="multi-fields">
+                                                <div class="multi-field">
+                                                    <br>
+                                                    <form class = "Moment">
+                                                        Moment magnitude: <input type="number" name="momentMag" min="1" max="100000" ><br>
+                                                        Moment Location: <input type="number" name="momentLoc" min="1" max="100000" ><br>
+
+                                                        <button type="button" class="add-field">Add Moment</button>
+
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+
+                                        <button type="button" class="btn btn-default"  id ="momentsButton" data-dismiss="modal">Add Moments</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <br>
+                    <div class="container">
+
+                        <!-- Trigger the modal with a button -->
+                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal3">Add Distributed Force</button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal3" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Please enter information about the distributed forces</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="multi-field-wrapper">
+                                            <div class="multi-fields">
+                                                <div class="multi-field">
+                                                    <br>
+                                                    <form class = "dataDistributed">
+                                                        Starting magnitude: <input type="number" name="forceStart" min="0" max="100000" ><br>
+                                                        Ending magnitude: <input type="number" name="forceEnd" min="0" max="100000" ><br>
+                                                        Start location: <input type="number" name="startLoc" min="0" max="100000" ><br>
+                                                        Finish location: <input type="number" name="endLoc" min="0" max="100000" >
+
+
+                                                        <button type="button" class="add-field">Add Force</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default"  id ="distributedButton" data-dismiss="modal">Add Distributed Forces</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <br>
+                    <div class="container">
+                    <button type="submit" class="btn btn-primary btn-danger" id="calcButton">Calculate</button>
+                  </div>
+                </div>
+                
+
+
+
+                <div class="col-sm-8">
+                    <div><h3> <p class="text-center"> Free Body Diagram</p> </h3> </div>
+                    <div id="jxgbox"></div>
+                    <div id="jxgbox32"></div>
+                    <div><h3> <p class="text-center">Shear Force Diagram</p> </h3> </div>
+                    <div id="jxgbox1"></div>
+
+                    <br>
+                    <div><h3> <p class="text-center">  Bending Moment Diagram</p> </h3> </div>
+                    <div id="jxgbox2"></div>
+                </div>
+            </div>
+        </div> 
+        <script type="text/javascript">
+
+            $('.multi-field-wrapper').each(function () {
+                var $wrapper = $('.multi-fields', this);
+                $(".add-field", $(this)).click(function (e) {
+                    var $el = $('.multi-field:first-child', $wrapper).clone(true);
+                    var $removeButton = $('<button type="button" class="remove-field">Remove</button>');
+                    $removeButton.click(function () {
+                        if ($('.multi-field', $wrapper).length > 1)
+                            $(this).parent('.multi-field').remove();
+                    });
+                    $el.append($removeButton);
+                    $el.appendTo($wrapper).find('input').val('').focus();
+                });
+            });
+            var beamGraph;
+
+            $('#beamButton').click(function () {
+                Beam.length = Number($('#beamlength').val());
+                sup1 = Number($('#support1').val());
+                sup2 = Number($('#support2').val());
+                if (sup2 === sup1 || sup2 > Beam.length || sup1 > Beam.length || sup2 < 0 || sup1 < 0 )
+                {
+                    bootbox.alert("Support can not be located outside the beam", function () {
+                        $('#myModal').modal('show');
+                    });
+
+                } 
+                else {
+                JXG.Options.axis.ticks.majorHeight = 60;
+                JXG.Options.axis.ticks.insertTicks = false;
+                JXG.Options.axis.ticks.ticksDistance = 10;
+                bl = Beam.length;
+                beamGraph = JXG.JSXGraph.initBoard('jxgbox', {boundingbox: [-0.2, bl * 3 / 14, Number(Beam.length) + 0.1 * Number(Beam.length), -bl * 3 / 14],
+                    axis: false, grid: false, showCopyright: false, registerEvents: false, showNavigation: false, needsRegularUpdate: true});
+
+                beamGraph32 = JXG.JSXGraph.initBoard('jxgbox32', {boundingbox: [-0.2, bl * 3 / 14, Number(Beam.length) + 0.1 * Number(Beam.length), -bl * 3 / 14],
+                    axis: false, grid: false, showCopyright: false, registerEvents: false, showNavigation: false, needsRegularUpdate: true});
+                var xaxis = beamGraph32.create('axis', [[0, 0], [1, 0]]);
+                xaxis.removeAllTicks();
+
+                // ADD BEAM LINE
+                var line_connect = beamGraph.create('line', [[0, 0],
+                    [Beam.length, 0]], {straightFirst: false, straightLast: false,
+                    strokeWidth: 10, strokeColor: '#9932CC'});
+                // ADD SUPPORT DOTS    
+
+                p2 = beamGraph.create('point', [sup1, -0.05], {name: '', face: '^', size: 7, color: '#black'});
+                
+                    p3 = beamGraph.create('point', [sup2, -0.05], {name: '', color: '#black', size: 5});
+                beamGraph32.create('ticks', [xaxis, [sup1, sup2, 0, Beam.length]], {strokeColor: '#00ff00', majorHeight: 15, drawLabels: true});
+/////////////
+                Beam.length = Number($('#beamlength').val());
+
+                Beam.lengthcheck = ($('#beamlength').val());
+                if (Beam.lengthcheck === "")
+                {
+                    bootbox.alert("Please enter information about beam first");
+
+                }
+
+                JXG.Options.axis.ticks.majorHeight = 60;
+                JXG.Options.axis.ticks.insertTicks = false;
+                JXG.Options.axis.ticks.ticksDistance = 10;
+                bl = Beam.length;
+                beamGraph = JXG.JSXGraph.initBoard('jxgbox', {boundingbox: [-0.2, bl * 3 / 14, Number(Beam.length) + 0.1 * Number(Beam.length), -bl * 3 / 14],
+                    axis: false, grid: false, showCopyright: false, registerEvents: false, showNavigation: false, needsRegularUpdate: true});
+                var xaxis = beamGraph32.create('axis', [[0, 0], [1, 0]]);
+                xaxis.removeAllTicks();
+                var line_connect = beamGraph.create('line', [[0, 0],
+                    [Beam.length, 0]], {straightFirst: false, straightLast: false,
+                    strokeWidth: 10, strokeColor: '#9932CC'});
+                // ADD SUPPORT DOTS    
+
+                sup1 = $('#support1').val();
+                p2 = beamGraph.create('point', [sup1, -0.05], {name: '', face: '^', size: 7, color: '#black'});
+                sup2 = $('#support2').val();
+                p3 = beamGraph.create('point', [sup2, -0.05], {name: '', color: '#black', size: 5});
+                beamGraph.create('ticks', [xaxis, [sup1, sup2, 0, Beam.length]], {strokeColor: '#00ff00', majorHeight: 15, drawLabels: true});
+                // add forces
+
+                var maxvalue = 0;
+                var minvalue = 0;
+                $('.dataConcentrated').each(function (i, e) {
+
+                    minvalue = Math.min(Number($(this).find('input[name="forceMag"]').val()), minvalue);
+                    maxvalue = Math.max(Number($(this).find('input[name="forceMag"]').val()), maxvalue);
+
+                });
+
+                $('.dataDistributed').each(function (i, e) {
+
+                    minvalue = Math.min(Number($(this).find('input[name="forceStart"]').val()), minvalue);
+                    minvalue = Math.min(Number($(this).find('input[name="forceEnd"]').val()), minvalue);
+                    maxvalue = Math.max(Number($(this).find('input[name="forceStart"]').val()), maxvalue);
+                    maxvalue = Math.max(Number($(this).find('input[name="forceEnd"]').val()), maxvalue);
+
+                });
+                adjust = bl * 150 / 750;
+                scalepos = maxvalue / adjust;
+                scaleneg = Math.abs(minvalue / adjust);
+                scale = Math.max(scalepos, scaleneg);
+                scale = Math.max(scalepos, scaleneg);
+                scale = Math.max(scalepos, scaleneg);
+                $('.dataConcentrated').each(function (i, e) {
+
+
+                    a = Number($(this).find('input[name="forceMag"]').val());
+                    d = a / scale;
+                    b = Number($(this).find('input[name="forceLoc"]').val());
+                    if (b > Beam.length || b < 0)
+                    {
+                        bootbox.alert("Force can not be located outside the beam",function () {
+                        $('#myModal1').modal('show');
+                    });
+
+                    }
+                    
+                    else {
+                         $('.Moment').each(function (i, e) {
+                    a = Number($(this).find('input[name="momentLoc"]').val());
+
+                    c = Number($(this).find('input[name="momentMag"]').val());
+                    if (a > Beam.length || a < 0)
+                    {
+                        bootbox.alert("Moment can not be located outside the beam",function () {
+                        $('#myModal2').modal('show');
+                        
+                    });
+                    }
+                    
+                });
+            }
+                    angle = Number($(this).find('input[name="forceAng"]').val());
+                    x = d * Math.cos(angle * Math.PI / 180);
+                    y = d * Math.sin(angle * Math.PI / 180);
+
+                    beamGraph.create('ticks', [xaxis, [b]], {strokeColor: '#00ff00', majorHeight: 15, drawLabels: true});
+
+                    if (a !== 0) {
+                        beamGraph.create('arrow', [[b + x, -y], [b, 0]], {strokeColor: 'red', strokeWidth: 5});
+                        beamGraph.create('text', [b + x, -y,
+                            function () {
+                                return  " " + " " + a;
+                            }], {strokeColor: 'red', fontSize: 20});
+                    }
+                });
+
+                $('.Moment').each(function (i, e) {
+                    a = Number($(this).find('input[name="momentLoc"]').val());
+
+                    c = Number($(this).find('input[name="momentMag"]').val());
+                    if (a > Beam.length || a < 0)
+                    {
+                        bootbox.alert("Moment can not be located outside the beam",function () {
+                        $('#myModal2').modal('show');
+                        
+                    });
+                    }
+                    beamGraph.create('ticks', [xaxis, [a]], {strokeColor: '#00ff00', majorHeight: 15, drawLabels: true});
+                    b = Number($('#beamlength').val()) / 30;
+                    if (a !== 0) {
+                        p1 = beamGraph.create('point', [a, 0], {name: '', visible: true, color: "blue"});
+                        p2 = beamGraph.create('point', [a + b, 0], {name: '', visible: false});
+                        p3 = beamGraph.create('point', [a, -b], {name: '', visible: false});
+                        if (c > 0) {
+                            beamGraph.create('arc', [p1, p2, p3],
+                                    {strokeColor: 'blue', firstArrow: false, lastArrow: true, strokeWidth: 4});
+                            beamGraph.create('text', [a + b / 2, -b,
+                                function () {
+                                    return  c;
+                                }], {strokeColor: 'blue', fontSize: 20});
+                        } else {
+                            beamGraph.create('arc', [p1, p2, p3],
+                                    {strokeColor: 'blue', firstArrow: true, lastArrow: false, strokeWidth: 4});
+                            beamGraph.create('text', [a + b / 2, -b,
+                                function () {
+                                    return  -c;
+                                }], {strokeColor: 'blue', fontSize: 20});
+                        }
+                    }
+
+                });
+
+                $('.dataDistributed').each(function (i, e) {
+
+                    k = Number($(this).find('input[name="forceStart"]').val());
+                    l = Number($(this).find('input[name="forceEnd"]').val());
+                    ll = Number($(this).find('input[name="forceStart"]').val() / scale);
+                    a = Number($(this).find('input[name="forceStart"]').val() / scale);
+                    b = Number($(this).find('input[name="forceEnd"]').val()) / scale;
+                    c = Number($(this).find('input[name="startLoc"]').val());
+                    d = Number($(this).find('input[name="endLoc"]').val());
+                    
+                    if (d > Beam.length || c < 0)
+                    {
+                        bootbox.alert("Distrubuted force can not extend beyond the beam",function () {
+                        $('#myModal3').modal('show');
+                    });
+
+                    }
+                    beamGraph.create('ticks', [xaxis, [c, d]], {strokeColor: '#00ff00', majorHeight: 15, drawLabels: true});
+                    slope = -(a - b) / (d - c);
+                    if ((k + l) !== 0) {
+                        beamGraph.create('text', [c, -a,
+                            function () {
+                                return  " " + " " + k;
+                            }], {color: 'orange', fontSize: 20});
+                        for (i = c; i <= d; i += 0.3)
+                        {
+                            beamGraph.create('arrow', [[i, -a], [i, 0]], {dash: 6, strokeWidth: 1, color: 'orange'});
+                            a = a + slope * 0.3;
+                        }
+                        ;
+                        beamGraph.create('line', [[c, -ll], [d, -b]],
+                                {straightFirst: false, straightLast: false, color: 'orange', strokeWidth: 1});
+                        beamGraph.create('text', [d, -b,
+                            function () {
+                                return  " " + "   " + l;
+                            }], {color: 'orange', fontSize: 20});
+                    }
+                    
+                });
+                ////
+
+            };
+
+            });
+            // ADD POINT FORCE
+
+
+            $('#forcesButton').click(function () {
+
+                Beam.length = Number($('#beamlength').val());
+
+                Beam.lengthcheck = ($('#beamlength').val());
+                if (Beam.lengthcheck === "")
+                {
+                    bootbox.alert("Please enter information about beam first",function () {
+                        $('#myModal').modal('show');
+                    });
+
+                }
+
+                JXG.Options.axis.ticks.majorHeight = 60;
+                JXG.Options.axis.ticks.insertTicks = false;
+                JXG.Options.axis.ticks.ticksDistance = 10;
+                bl = Beam.length;
+                beamGraph = JXG.JSXGraph.initBoard('jxgbox', {boundingbox: [-0.2, bl * 3 / 14, Number(Beam.length) + 0.1 * Number(Beam.length), -bl * 3 / 14],
+                    axis: false, grid: false, showCopyright: false, registerEvents: false, showNavigation: false, needsRegularUpdate: true});
+                var xaxis = beamGraph32.create('axis', [[0, 0], [1, 0]]);
+                xaxis.removeAllTicks();
+                var line_connect = beamGraph.create('line', [[0, 0],
+                    [Beam.length, 0]], {straightFirst: false, straightLast: false,
+                    strokeWidth: 10, strokeColor: '#9932CC'});
+                // ADD SUPPORT DOTS    
+
+                sup1 = $('#support1').val();
+                p2 = beamGraph.create('point', [sup1, -0.05], {name: '', face: '^', size: 7, color: '#black'});
+                sup2 = $('#support2').val();
+                p3 = beamGraph.create('point', [sup2, -0.05], {name: '', color: '#black', size: 5});
+                beamGraph.create('ticks', [xaxis, [sup1, sup2, 0, Beam.length]], {strokeColor: '#00ff00', majorHeight: 15, drawLabels: true});
+                // add forces
+
+                var maxvalue = 0;
+                var minvalue = 0;
+                $('.dataConcentrated').each(function (i, e) {
+
+                    minvalue = Math.min(Number($(this).find('input[name="forceMag"]').val()), minvalue);
+                    maxvalue = Math.max(Number($(this).find('input[name="forceMag"]').val()), maxvalue);
+
+                });
+
+
+
+                $('.dataDistributed').each(function (i, e) {
+
+                    minvalue = Math.min(Number($(this).find('input[name="forceStart"]').val()), minvalue);
+                    minvalue = Math.min(Number($(this).find('input[name="forceEnd"]').val()), minvalue);
+                    maxvalue = Math.max(Number($(this).find('input[name="forceStart"]').val()), maxvalue);
+                    maxvalue = Math.max(Number($(this).find('input[name="forceEnd"]').val()), maxvalue);
+
+                });
+                adjust = bl * 150 / 750;
+                scalepos = maxvalue / adjust;
+                scaleneg = Math.abs(minvalue / adjust);
+                scale = Math.max(scalepos, scaleneg);
+                scale = Math.max(scalepos, scaleneg);
+                scale = Math.max(scalepos, scaleneg);
+                $('.dataConcentrated').each(function (i, e) {
+
+
+                    a = Number($(this).find('input[name="forceMag"]').val());
+                    d = a / scale;
+                    b = Number($(this).find('input[name="forceLoc"]').val());
+                    if (b > Beam.length || b < 0)
+                    {
+                        bootbox.alert("Force can not be located outside the beam", function () {
+                        $('#myModal1').modal('show');
+                    });
+
+                    }
+                    else {
+                    angle = Number($(this).find('input[name="forceAng"]').val());
+                    x = d * Math.cos(angle * Math.PI / 180);
+                    y = d * Math.sin(angle * Math.PI / 180);
+
+                    beamGraph.create('ticks', [xaxis, [b]], {strokeColor: '#00ff00', majorHeight: 15, drawLabels: true});
+
+                    if (a !== 0) {
+                        beamGraph.create('arrow', [[b + x, -y], [b, 0]], {strokeColor: 'red', strokeWidth: 5});
+                        beamGraph.create('text', [b + x, -y,
+                            function () {
+                                return  " " + " " + a;
+                            }], {strokeColor: 'red', fontSize: 20});
+                    }
+                }
+                });
+
+                $('.Moment').each(function (i, e) {
+                    a = Number($(this).find('input[name="momentLoc"]').val());
+
+                    c = Number($(this).find('input[name="momentMag"]').val());
+
+                    beamGraph.create('ticks', [xaxis, [a]], {strokeColor: '#00ff00', majorHeight: 15, drawLabels: true});
+                    b = Number($('#beamlength').val()) / 30;
+                    if (a !== 0) {
+                        p1 = beamGraph.create('point', [a, 0], {name: '', visible: true, color: "blue"});
+                        p2 = beamGraph.create('point', [a + b, 0], {name: '', visible: false});
+                        p3 = beamGraph.create('point', [a, -b], {name: '', visible: false});
+                        if (c > 0) {
+                            beamGraph.create('arc', [p1, p2, p3],
+                                    {strokeColor: 'blue', firstArrow: false, lastArrow: true, strokeWidth: 4});
+                            beamGraph.create('text', [a + b / 2, -b,
+                                function () {
+                                    return  c;
+                                }], {strokeColor: 'blue', fontSize: 20});
+                        } else {
+                            beamGraph.create('arc', [p1, p2, p3],
+                                    {strokeColor: 'blue', firstArrow: true, lastArrow: false, strokeWidth: 4});
+                            beamGraph.create('text', [a + b / 2, -b,
+                                function () {
+                                    return  -c;
+                                }], {strokeColor: 'blue', fontSize: 20});
+                        }
+                    }
+
+                });
+
+                $('.dataDistributed').each(function (i, e) {
+
+                    k = Number($(this).find('input[name="forceStart"]').val());
+                    l = Number($(this).find('input[name="forceEnd"]').val());
+                    ll = Number($(this).find('input[name="forceStart"]').val() / scale);
+                    a = Number($(this).find('input[name="forceStart"]').val() / scale);
+                    b = Number($(this).find('input[name="forceEnd"]').val()) / scale;
+                    c = Number($(this).find('input[name="startLoc"]').val());
+                    d = Number($(this).find('input[name="endLoc"]').val());
+                    beamGraph.create('ticks', [xaxis, [c, d]], {strokeColor: '#00ff00', majorHeight: 15, drawLabels: true});
+                    slope = -(a - b) / (d - c);
+                    if ((k + l) !== 0) {
+                        beamGraph.create('text', [c, -a,
+                            function () {
+                                return  " " + " " + k;
+                            }], {color: 'orange', fontSize: 20});
+                        for (i = c; i <= d; i += 0.3)
+                        {
+                            beamGraph.create('arrow', [[i, -a], [i, 0]], {dash: 6, strokeWidth: 1, color: 'orange'});
+                            a = a + slope * 0.3;
+                        }
+                        ;
+                        beamGraph.create('line', [[c, -ll], [d, -b]],
+                                {straightFirst: false, straightLast: false, color: 'orange', strokeWidth: 1});
+                        beamGraph.create('text', [d, -b,
+                            function () {
+                                return  " " + "   " + l;
+                            }], {color: 'orange', fontSize: 20});
+                    }
+                });
+            });
+
+            //ADD MOMENTS
+
+            $('#momentsButton').click(function () {
+
+
+                Beam.length = Number($('#beamlength').val());
+                Beam.lengthcheck = ($('#beamlength').val());
+                if (Beam.lengthcheck === "")
+                {
+                    bootbox.alert("Please enter information about beam first", function () {
+                        $('#myModal').modal('show');
+                    });
+
+                }
+
+                JXG.Options.axis.ticks.majorHeight = 60;
+                JXG.Options.axis.ticks.insertTicks = false;
+                JXG.Options.axis.ticks.ticksDistance = 10;
+                bl = Beam.length;
+                beamGraph = JXG.JSXGraph.initBoard('jxgbox', {boundingbox: [-0.2, bl * 3 / 14, Number(Beam.length) + 0.1 * Number(Beam.length), -bl * 3 / 14],
+                    axis: false, grid: false, showCopyright: false, registerEvents: false, showNavigation: false, needsRegularUpdate: true});
+                var line_connect = beamGraph.create('line', [[0, 0],
+                    [Beam.length, 0]], {straightFirst: false, straightLast: false,
+                    strokeWidth: 10, strokeColor: '#9932CC'});
+                // ADD SUPPORT DOTS    
+
+                sup1 = $('#support1').val();
+                p2 = beamGraph.create('point', [sup1, -0.05], {name: '', face: '^', size: 7, color: '#black'});
+                sup2 = $('#support2').val();
+                p3 = beamGraph.create('point', [sup2, -0.05], {name: '', color: '#black', size: 5});
+                var xaxis = beamGraph32.create('axis', [[0, 0], [1, 0]]);
+                xaxis.removeAllTicks();
+                beamGraph.create('ticks', [xaxis, [sup1, sup2, 0, Beam.length]], {strokeColor: '#00ff00', majorHeight: 15, drawLabels: true});
+                // add forces
+
+                var maxvalue = 0;
+                var minvalue = 0;
+                $('.dataConcentrated').each(function (i, e) {
+
+                    minvalue = Math.min(Number($(this).find('input[name="forceMag"]').val()), minvalue);
+                    maxvalue = Math.max(Number($(this).find('input[name="forceMag"]').val()), maxvalue);
+
+                });
+
+                $('.dataDistributed').each(function (i, e) {
+
+                    minvalue = Math.min(Number($(this).find('input[name="forceStart"]').val()), minvalue);
+                    minvalue = Math.min(Number($(this).find('input[name="forceEnd"]').val()), minvalue);
+                    maxvalue = Math.max(Number($(this).find('input[name="forceStart"]').val()), maxvalue);
+                    maxvalue = Math.max(Number($(this).find('input[name="forceEnd"]').val()), maxvalue);
+
+                });
+                adjust = bl * 150 / 750;
+                scalepos = maxvalue / adjust;
+                scaleneg = Math.abs(minvalue / adjust);
+                scale = Math.max(scalepos, scaleneg);
+                scale = Math.max(scalepos, scaleneg);
+                scale = Math.max(scalepos, scaleneg);
+                $('.dataConcentrated').each(function (i, e) {
+
+                    a = Number($(this).find('input[name="forceMag"]').val());
+                    d = a / scale;
+                    b = Number($(this).find('input[name="forceLoc"]').val());
+                    angle = Number($(this).find('input[name="forceAng"]').val());
+                    x = d * Math.cos(angle * Math.PI / 180);
+                    y = d * Math.sin(angle * Math.PI / 180);
+
+                    beamGraph.create('ticks', [xaxis, [b]], {strokeColor: '#00ff00', majorHeight: 15, drawLabels: true});
+
+                    if (a !== 0) {
+                        beamGraph.create('arrow', [[b + x, -y], [b, 0]], {strokeColor: 'red', strokeWidth: 5});
+                        beamGraph.create('text', [b + x, -y,
+                            function () {
+                                return  " " + " " + a;
+                            }], {strokeColor: 'red', fontSize: 20});
+                    }
+                });
+
+                $('.Moment').each(function (i, e) {
+                    a = Number($(this).find('input[name="momentLoc"]').val());
+                    if (a > Beam.length || a < 0)
+                    {
+                        bootbox.alert("Moment can not be located outside the beam",function () {
+                        $('#myModal2').modal('show');
+                    });
+
+                    }
+                    else {
+                    c = Number($(this).find('input[name="momentMag"]').val());
+                    beamGraph.create('ticks', [xaxis, [a]], {strokeColor: '#00ff00', majorHeight: 15, drawLabels: true});
+                    b = Number($('#beamlength').val()) / 30;
+                    if (a !== 0) {
+                        p1 = beamGraph.create('point', [a, 0], {name: '', visible: true, color: "blue"});
+                        p2 = beamGraph.create('point', [a + b, 0], {name: '', visible: false});
+                        p3 = beamGraph.create('point', [a, -b], {name: '', visible: false});
+                        if (c > 0) {
+                            beamGraph.create('arc', [p1, p2, p3],
+                                    {strokeColor: 'blue', firstArrow: false, lastArrow: true, strokeWidth: 4});
+                            beamGraph.create('text', [a + b / 2, -b,
+                                function () {
+                                    return  c;
+                                }], {strokeColor: 'blue', fontSize: 20});
+                        } else {
+                            beamGraph.create('arc', [p1, p2, p3],
+                                    {strokeColor: 'blue', firstArrow: true, lastArrow: false, strokeWidth: 4});
+                            beamGraph.create('text', [a + b / 2, -b,
+                                function () {
+                                    return  -c;
+                                }], {strokeColor: 'blue', fontSize: 20});
+                        }
+                    }
+                    }
+                });
+
+                $('.dataDistributed').each(function (i, e) {
+
+                    k = Number($(this).find('input[name="forceStart"]').val());
+                    l = Number($(this).find('input[name="forceEnd"]').val());
+                    ll = Number($(this).find('input[name="forceStart"]').val() / scale);
+                    a = Number($(this).find('input[name="forceStart"]').val() / scale);
+                    b = Number($(this).find('input[name="forceEnd"]').val()) / scale;
+                    c = Number($(this).find('input[name="startLoc"]').val());
+                    d = Number($(this).find('input[name="endLoc"]').val());
+                    if (d < Beam.length && c >= 0) {
+                        beamGraph.create('ticks', [xaxis, [c, d]], {strokeColor: '#00ff00', majorHeight: 15, drawLabels: true});
+                        slope = -(a - b) / (d - c);
+                        if ((k + l) !== 0) {
+                            beamGraph.create('text', [c, -a,
+                                function () {
+                                    return  " " + " " + k;
+                                }], {color: 'orange', fontSize: 20});
+                            for (i = c; i <= d; i += 0.3)
+                            {
+                                beamGraph.create('arrow', [[i, -a], [i, 0]], {dash: 6, strokeWidth: 1, color: 'orange'});
+                                a = a + slope * 0.3;
+                            }
+                            ;
+                            beamGraph.create('line', [[c, -ll], [d, -b]],
+                                    {straightFirst: false, straightLast: false, color: 'orange', strokeWidth: 1});
+                            beamGraph.create('text', [d, -b,
+                                function () {
+                                    return  " " + "   " + l;
+                                }], {color: 'orange', fontSize: 20});
+                        }
+                    }
+                });
+            });
+
+
+            $('#distributedButton').click(function () {
+
+                Beam.length = Number($('#beamlength').val());
+                Beam.lengthcheck = $('#beamlength').val();
+                if (Beam.lengthcheck === "")
+                {
+                    bootbox.alert("Please enter information about beam first",function () {
+                        $('#myModal').modal('show');
+                    });
+
+                }
+
+                JXG.Options.axis.ticks.majorHeight = 60;
+                JXG.Options.axis.ticks.insertTicks = false;
+                JXG.Options.axis.ticks.ticksDistance = 10;
+                bl = Beam.length;
+                beamGraph = JXG.JSXGraph.initBoard('jxgbox', {boundingbox: [-0.2, bl * 3 / 14, Number(Beam.length) + 0.1 * Number(Beam.length), -bl * 3 / 14],
+                    axis: false, grid: false, showCopyright: false, registerEvents: false, showNavigation: false, needsRegularUpdate: true});
+                var line_connect = beamGraph.create('line', [[0, 0],
+                    [Beam.length, 0]], {straightFirst: false, straightLast: false,
+                    strokeWidth: 10, strokeColor: '#9932CC'});
+                // ADD SUPPORT DOTS    
+
+                sup1 = $('#support1').val();
+                p2 = beamGraph.create('point', [sup1, -0.05], {name: '', face: '^', size: 7, color: '#black'});
+                sup2 = $('#support2').val();
+                p3 = beamGraph.create('point', [sup2, -0.05], {name: '', color: '#black', size: 5});
+                var xaxis = beamGraph32.create('axis', [[0, 0], [1, 0]]);
+                xaxis.removeAllTicks();
+                beamGraph.create('ticks', [xaxis, [sup1, sup2, 0, Beam.length]], {strokeColor: '#00ff00', majorHeight: 15, drawLabels: true});
+
+                // add forces
+
+                var maxvalue = 0;
+                var minvalue = 0;
+                $('.dataConcentrated').each(function (i, e) {
+
+                    minvalue = Math.min(Number($(this).find('input[name="forceMag"]').val()), minvalue);
+                    maxvalue = Math.max(Number($(this).find('input[name="forceMag"]').val()), maxvalue);
+
+                });
+
+                $('.dataDistributed').each(function (i, e) {
+
+                    minvalue = Math.min(Number($(this).find('input[name="forceStart"]').val()), minvalue);
+                    minvalue = Math.min(Number($(this).find('input[name="forceEnd"]').val()), minvalue);
+                    maxvalue = Math.max(Number($(this).find('input[name="forceStart"]').val()), maxvalue);
+                    maxvalue = Math.max(Number($(this).find('input[name="forceEnd"]').val()), maxvalue);
+
+                });
+                adjust = bl * 150 / 750;
+                scalepos = maxvalue / adjust;
+                scaleneg = Math.abs(minvalue / adjust);
+                scale = Math.max(scalepos, scaleneg);
+                scale = Math.max(scalepos, scaleneg);
+                scale = Math.max(scalepos, scaleneg);
+                $('.dataConcentrated').each(function (i, e) {
+
+                    a = Number($(this).find('input[name="forceMag"]').val());
+                    d = a / scale;
+                    b = Number($(this).find('input[name="forceLoc"]').val());
+                    angle = Number($(this).find('input[name="forceAng"]').val());
+                    x = d * Math.cos(angle * Math.PI / 180);
+                    y = d * Math.sin(angle * Math.PI / 180);
+
+                    beamGraph.create('ticks', [xaxis, [b]], {strokeColor: '#00ff00', majorHeight: 15, drawLabels: true});
+
+                    if (a !== 0) {
+                        beamGraph.create('arrow', [[b + x, -y], [b, 0]], {strokeColor: 'red', strokeWidth: 5});
+                        beamGraph.create('text', [b + x, -y,
+                            function () {
+                                return  " " + " " + a;
+                            }], {strokeColor: 'red', fontSize: 20});
+                    }
+                });
+
+                $('.Moment').each(function (i, e) {
+                    a = Number($(this).find('input[name="momentLoc"]').val());
+                    c = Number($(this).find('input[name="momentMag"]').val());
+                    beamGraph.create('ticks', [xaxis, [a]], {strokeColor: '#00ff00', majorHeight: 15, drawLabels: true});
+                    b = Number($('#beamlength').val()) / 30;
+                    if (a !== 0) {
+                        p1 = beamGraph.create('point', [a, 0], {name: '', visible: true, color: "blue"});
+                        p2 = beamGraph.create('point', [a + b, 0], {name: '', visible: false});
+                        p3 = beamGraph.create('point', [a, -b], {name: '', visible: false});
+                        if (c > 0) {
+                            beamGraph.create('arc', [p1, p2, p3],
+                                    {strokeColor: 'blue', firstArrow: false, lastArrow: true, strokeWidth: 4});
+                            beamGraph.create('text', [a + b / 2, -b,
+                                function () {
+                                    return  c;
+                                }], {strokeColor: 'blue', fontSize: 20});
+                        } else {
+                            beamGraph.create('arc', [p1, p2, p3],
+                                    {strokeColor: 'blue', firstArrow: true, lastArrow: false, strokeWidth: 4});
+                            beamGraph.create('text', [a + b / 2, -b,
+                                function () {
+                                    return  -c;
+                                }], {strokeColor: 'blue', fontSize: 20});
+                        }
+                    }
+
+                });
+
+                $('.dataDistributed').each(function (i, e) {
+
+                    k = Number($(this).find('input[name="forceStart"]').val());
+                    l = Number($(this).find('input[name="forceEnd"]').val());
+                    ll = Number($(this).find('input[name="forceStart"]').val() / scale);
+                    a = Number($(this).find('input[name="forceStart"]').val() / scale);
+                    b = Number($(this).find('input[name="forceEnd"]').val()) / scale;
+                    c = Number($(this).find('input[name="startLoc"]').val());
+                    p = Number($(this).find('input[name="endLoc"]').val());
+                    if (p > Beam.length || c < 0)
+                    {
+                        bootbox.alert("Distrubuted force can not extend beyond the beam",function () {
+                        $('#myModal3').modal('show');
+                    });
+
+                    }
+                    if (p <= Beam.length && c >= 0) {
+
+                        beamGraph.create('ticks', [xaxis, [c, d]], {strokeColor: '#00ff00', majorHeight: 15, drawLabels: true});
+
+                        d = Number($(this).find('input[name="endLoc"]').val());
+                        slope = -(a - b) / (d - c);
+                        if ((k + l) !== 0) {
+                            beamGraph.create('text', [c, -a,
+                                function () {
+                                    return  " " + " " + k;
+                                }], {color: 'orange', fontSize: 20});
+                            for (i = c; i <= d; i += 0.3)
+                            {
+                                beamGraph.create('arrow', [[i, -a], [i, 0]], {dash: 6, strokeWidth: 1, color: 'orange'});
+                                a = a + slope * 0.3;
+                            }
+                            ;
+                            beamGraph.create('line', [[c, -ll], [d, -b]],
+                                    {straightFirst: false, straightLast: false, color: 'orange', strokeWidth: 1});
+                            beamGraph.create('text', [d, -b,
+                                function () {
+                                    return  " " + "   " + l;
+                                }], {color: 'orange', fontSize: 20});
+                        }
+                    }
+                });
+
+
+            });
+            // ON CALCULATE BUTTON 
+            $('#calcButton').click(function () {
+                Beam.length = $('#beamlength').val();
+                Beam.listForces = [];
+                Beam.listSupports = [];
+                Beam.listMoments = [];
+                Beam.listMomGraph = [];
+
+                $('.Moment').each(function (i, e) { // ADD MOMENT
+
+                    var moment = Object.create(Moment); // create moment
+                    moment.Magnitude = Number($(this).find('input[name="momentMag"]').val());
+                    moment.StartLocation = Number($(this).find('input[name="momentLoc"]').val());
+
+                    Beam.addMoment(moment);
+                    Beam.addMomGraph(moment); // adding moment to the graph
+                });
+
+                // CONCENTRATED 
+                $('.dataConcentrated').each(function (i, e) {
+
+                    var force = Object.create(PointForce);
+                    force.absmagnitude = Number($(this).find('input[name="forceMag"]').val());
+
+                    force.StartLocation = Number($(this).find('input[name="forceLoc"]').val());
+                    force.angle = Number($(this).find('input[name="forceAng"]').val());
+                    Beam.addForce(force);
+                    Beam.addMomGraph(force);
+
+                });
+                $('.dataDistributed').each(function (i, e) { // ADD DISTR FORCE
+                    // IF RECTANGULAR
+                    k = Number($(this).find('input[name="forceStart"]').val());
+                    l = Number($(this).find('input[name="forceEnd"]').val());
+
+                    if ((k + l) !== 0) {
+                        if (Number($(this).find('input[name="forceStart"]').val()) === (Number($(this).find('input[name="forceEnd"]').val())))
+                        {
+                            if (Number($(this).find('input[name="endLoc"]').val()) !== Number($('#beamlength').val())) // IF ENDS BEFORE
+                            {
+                                var force = Object.create(DistributedForce); // ADD FORCE TILL END
+                                force.StartMagnitude = Number($(this).find('input[name="forceStart"]').val());
+                                force.EndMagnitude = Number($(this).find('input[name="forceEnd"]').val());
+                                force.StartLocation = Number($(this).find('input[name="startLoc"]').val());
+                                force.EndLocation = Number($('#beamlength').val());
+
+                                Beam.addForce(force);
+                                Beam.addMomGraph(force);
+                                var forceCompensate = Object.create(DistributedForce); // DEDUCT LEFTOVER FORCE
+                                forceCompensate.StartMagnitude = -Number($(this).find('input[name="forceStart"]').val());
+                                forceCompensate.EndMagnitude = -Number($(this).find('input[name="forceEnd"]').val());
+                                forceCompensate.StartLocation = Number($(this).find('input[name="endLoc"]').val());
+                                forceCompensate.EndLocation = Number($('#beamlength').val());
+                                Beam.addForce(forceCompensate);
+                                Beam.addMomGraph(forceCompensate);
+                            } else {
+                                var force = Object.create(DistributedForce); // ADD FORCE TILL END
+                                force.StartMagnitude = Number($(this).find('input[name="forceStart"]').val());
+                                force.EndMagnitude = Number($(this).find('input[name="forceEnd"]').val());
+                                force.StartLocation = Number($(this).find('input[name="startLoc"]').val());
+                                force.EndLocation = Number($(this).find('input[name="endLoc"]').val());
+                                Beam.addForce(force);
+                                Beam.addMomGraph(force);
+                            }
+
+                        }
+
+                        // IF TRIANGULAR INCREASING
+                        else if (Number($(this).find('input[name="forceStart"]').val()) === 0)
+
+                        {
+
+                            if (Number($(this).find('input[name="endLoc"]').val()) !== Number($('#beamlength').val())) // IF ENDS BEFORE
+                            {
+                                var force = Object.create(DistributedForce); // ADD FORCE TRIANGULAR TILL END
+                                force.StartMagnitude = Number($(this).find('input[name="forceStart"]').val());
+                                tri = ((Number($('#beamlength').val()))
+                                        - Number($(this).find('input[name="startLoc"]').val())) *
+                                        Number($(this).find('input[name="forceEnd"]').val()) / (Number($(this).find('input[name="endLoc"]').val()) -
+                                        Number($(this).find('input[name="startLoc"]').val()));
+                                force.EndMagnitude = ((Number($('#beamlength').val()))
+                                        - Number($(this).find('input[name="startLoc"]').val())) *
+                                        Number($(this).find('input[name="forceEnd"]').val()) / (Number($(this).find('input[name="endLoc"]').val()) -
+                                        Number($(this).find('input[name="startLoc"]').val()));
+                                force.StartLocation = Number($(this).find('input[name="startLoc"]').val());
+                                force.EndLocation = Number($('#beamlength').val());
+                                Beam.addForce(force);
+                                Beam.addMomGraph(force);
+
+                                var forceCompensate1 = Object.create(DistributedForce); // DEDUCT LEFTOVER FORCE Rectangular
+                                forceCompensate1.StartMagnitude = -Number($(this).find('input[name="forceEnd"]').val());
+                                forceCompensate1.EndMagnitude = -Number($(this).find('input[name="forceEnd"]').val());
+                                forceCompensate1.StartLocation = Number($(this).find('input[name="endLoc"]').val());
+                                forceCompensate1.EndLocation = Number($('#beamlength').val());
+                                Beam.addForce(forceCompensate1);
+                                Beam.addMomGraph(forceCompensate1);
+
+                                //DEDUCT TRIANGLE
+
+                                var forceCompensate2 = Object.create(DistributedForce); // DEDUCT LEFTOVER FORCE Triangular
+                                forceCompensate2.StartMagnitude = 0;
+                                forceCompensate2.EndMagnitude = -(tri - Number($(this).find('input[name="forceEnd"]').val()));
+                                forceCompensate2.StartLocation = Number($(this).find('input[name="endLoc"]').val());
+                                forceCompensate2.EndLocation = Number($('#beamlength').val());
+                                Beam.addForce(forceCompensate2);
+                                Beam.addMomGraph(forceCompensate2);
+
+
+                            } else {
+                                var force = Object.create(DistributedForce); // ADD FORCE TILL END
+                                force.StartMagnitude = Number($(this).find('input[name="forceStart"]').val());
+                                force.EndMagnitude = Number($(this).find('input[name="forceEnd"]').val());
+                                force.StartLocation = Number($(this).find('input[name="startLoc"]').val());
+                                force.EndLocation = Number($(this).find('input[name="endLoc"]').val());
+                                Beam.addForce(force);
+                                Beam.addMomGraph(force);
+                            }
+
+                        }
+
+
+
+                        // IF TRIANGULAR DECREASING  
+
+                        else if (Number($(this).find('input[name="forceEnd"]').val()) === 0)
+
+                        {
+                            if (Number($(this).find('input[name="endLoc"]').val()) !== Number($('#beamlength').val())) // IF ENDS BEFORE
+                            {
+
+                                var force = Object.create(DistributedForce); // ADD FORCE RECTANGULAR TILL end of force
+
+                                force.StartMagnitude = Number($(this).find('input[name="forceStart"]').val());
+                                force.EndMagnitude = Number($(this).find('input[name="forceStart"]').val());
+                                force.StartLocation = Number($(this).find('input[name="startLoc"]').val());
+                                force.EndLocation = Number($(this).find('input[name="endLoc"]').val());
+                                Beam.addForce(force);
+                                Beam.addMomGraph(force);
+
+
+                                var force6 = Object.create(FunctionForce); // function force
+                                a = Number($(this).find('input[name="endLoc"]').val()) -
+                                        Number($(this).find('input[name="startLoc"]').val());
+
+                                force6.slope = (Number($(this).find('input[name="forceStart"]').val())) / a;
+
+                                force6.StartLocation = Number($(this).find('input[name="endLoc"]').val());
+                                force6.EndLocation = Number($('#beamlength').val());
+                                Beam.addForce(force6);
+                                Beam.addMomGraph(force6);
+
+
+                                var force5 = Object.create(DistributedForce); // ADD FORCE RECTANGULAR TILL END
+
+                                force5.StartMagnitude = Number($(this).find('input[name="forceStart"]').val());
+                                force5.EndMagnitude = Number($(this).find('input[name="forceStart"]').val());
+                                force5.StartLocation = Number($(this).find('input[name="endLoc"]').val());
+                                force5.EndLocation = Number($('#beamlength').val());
+                                Beam.addForce(force5);
+                                Beam.addMomGraph(force5);
+
+                                // ADD COMPENSATING RECTANGLE 
+                                // 
+                                var forceCompensate1 = Object.create(DistributedForce); // DEDUCT LEFTOVER FORCE Rectangular
+                                forceCompensate1.StartMagnitude = -Number($(this).find('input[name="forceStart"]').val());
+                                forceCompensate1.EndMagnitude = -Number($(this).find('input[name="forceStart"]').val());
+                                forceCompensate1.StartLocation = Number($(this).find('input[name="endLoc"]').val());
+                                forceCompensate1.EndLocation = Number($('#beamlength').val());
+                                Beam.addForce(forceCompensate1);
+                                Beam.addMomGraph(forceCompensate1);
+
+                                //DEDUCT TRIANGLE
+
+                                var forceCompensate2 = Object.create(DistributedForce); // DEDUCT LEFTOVER FORCE Triangular
+                                forceCompensate2.StartMagnitude = -Number($(this).find('input[name="forceEnd"]').val());
+                                forceCompensate2.EndMagnitude = -Number($(this).find('input[name="forceStart"]').val());
+                                forceCompensate2.StartLocation = Number($(this).find('input[name="startLoc"]').val());
+                                forceCompensate2.EndLocation = Number($(this).find('input[name="endLoc"]').val());
+                                ;
+                                Beam.addForce(forceCompensate2);
+                                Beam.addMomGraph(forceCompensate2);
+                            } else {
+                                var force = Object.create(DistributedForce); // ADD FORCE RECTANGULAR TILL END
+
+                                force.StartMagnitude = Number($(this).find('input[name="forceStart"]').val());
+                                force.EndMagnitude = Number($(this).find('input[name="forceStart"]').val());
+                                force.StartLocation = Number($(this).find('input[name="startLoc"]').val());
+                                force.EndLocation = Number($('#beamlength').val());
+                                Beam.addForce(force);
+                                Beam.addMomGraph(force);
+
+                                //deduct Triagnle
+
+                                var forceCompensate2 = Object.create(DistributedForce); // DEDUCT LEFTOVER FORCE Triangular
+                                forceCompensate2.StartMagnitude = -Number($(this).find('input[name="forceEnd"]').val());
+                                forceCompensate2.EndMagnitude = -Number($(this).find('input[name="forceStart"]').val());
+                                forceCompensate2.StartLocation = Number($(this).find('input[name="startLoc"]').val());
+                                forceCompensate2.EndLocation = Number($(this).find('input[name="endLoc"]').val());
+                                ;
+                                Beam.addForce(forceCompensate2);
+                                Beam.addMomGraph(forceCompensate2);
+
+                            }
+
+                        }
+                        // IF TRAPEZOID INCREAZING 
+
+                        else if (Number($(this).find('input[name="forceStart"]').val()) < Number($(this).find('input[name="forceEnd"]').val()))
+
+                        {
+
+                            if (Number($(this).find('input[name="endLoc"]').val()) !== Number($('#beamlength').val())) // IF ENDS BEFORE
+                            {
+                                var force = Object.create(DistributedForce); // ADD FORCE TRIANGULAR TILL END
+                                force.StartMagnitude = 0;
+                                tri = ((Number($('#beamlength').val()))
+                                        - Number($(this).find('input[name="startLoc"]').val())) *
+                                        (Number($(this).find('input[name="forceEnd"]').val()) - Number($(this).find('input[name="forceStart"]').val())) /
+                                        (Number($(this).find('input[name="endLoc"]').val()) -
+                                                Number($(this).find('input[name="startLoc"]').val()));
+                                force.EndMagnitude = ((Number($('#beamlength').val()))
+                                        - Number($(this).find('input[name="startLoc"]').val())) *
+                                        (Number($(this).find('input[name="forceEnd"]').val()) - Number($(this).find('input[name="forceStart"]').val())) /
+                                        (Number($(this).find('input[name="endLoc"]').val()) -
+                                                Number($(this).find('input[name="startLoc"]').val()));
+                                force.StartLocation = Number($(this).find('input[name="startLoc"]').val());
+                                force.EndLocation = Number($('#beamlength').val());
+                                Beam.addForce(force);
+                                Beam.addMomGraph(force);
+
+                                var forceCompensate1 = Object.create(DistributedForce); // DEDUCT LEFTOVER FORCE Rectangular
+                                forceCompensate1.StartMagnitude = -(Number($(this).find('input[name="forceEnd"]').val()) - Number($(this).find('input[name="forceStart"]').val()));
+                                forceCompensate1.EndMagnitude = -(Number($(this).find('input[name="forceEnd"]').val()) - Number($(this).find('input[name="forceStart"]').val()));
+                                ;
+                                forceCompensate1.StartLocation = Number($(this).find('input[name="endLoc"]').val());
+                                forceCompensate1.EndLocation = Number($('#beamlength').val());
+                                Beam.addForce(forceCompensate1);
+                                Beam.addMomGraph(forceCompensate1);
+
+                                //DEDUCT TRIANGLE
+
+                                var forceCompensate2 = Object.create(DistributedForce); // DEDUCT LEFTOVER FORCE Triangular
+                                forceCompensate2.StartMagnitude = 0;
+                                forceCompensate2.EndMagnitude = -(tri - (Number($(this).find('input[name="forceEnd"]').val()) - Number($(this).find('input[name="forceStart"]').val())));
+                                forceCompensate2.StartLocation = Number($(this).find('input[name="endLoc"]').val());
+                                forceCompensate2.EndLocation = Number($('#beamlength').val());
+                                Beam.addForce(forceCompensate2);
+                                Beam.addMomGraph(forceCompensate2);
+
+
+                                //ADD Full rectange
+
+                                var forceCompensate3 = Object.create(DistributedForce); // DEDUCT LEFTOVER FORCE Rectangular
+                                forceCompensate3.StartMagnitude = (Number($(this).find('input[name="forceStart"]').val()));
+                                forceCompensate3.EndMagnitude = (Number($(this).find('input[name="forceStart"]').val()));
+                                forceCompensate3.StartLocation = Number($(this).find('input[name="startLoc"]').val());
+                                forceCompensate3.EndLocation = Number($('#beamlength').val());
+                                Beam.addForce(forceCompensate3);
+                                Beam.addMomGraph(forceCompensate3);
+
+                                // DEDUCT RECTANGLE
+
+                                var forceCompensate4 = Object.create(DistributedForce); // DEDUCT LEFTOVER FORCE Rectangular
+                                forceCompensate4.StartMagnitude = -(Number($(this).find('input[name="forceStart"]').val()));
+                                forceCompensate4.EndMagnitude = -(Number($(this).find('input[name="forceStart"]').val()));
+                                forceCompensate4.StartLocation = Number($(this).find('input[name="endLoc"]').val());
+                                forceCompensate4.EndLocation = Number($('#beamlength').val());
+                                Beam.addForce(forceCompensate4);
+                                Beam.addMomGraph(forceCompensate4);
+
+
+                            } else {
+                                var force = Object.create(DistributedForce);
+                                force.StartMagnitude = 0;
+                                force.EndMagnitude = Number($(this).find('input[name="forceEnd"]').val()) - Number($(this).find('input[name="forceStart"]').val());
+                                force.StartLocation = Number($(this).find('input[name="startLoc"]').val());
+                                force.EndLocation = Number($(this).find('input[name="endLoc"]').val());
+                                Beam.addForce(force);
+                                Beam.addMomGraph(force);
+
+                                var force1 = Object.create(DistributedForce);
+                                force1.StartMagnitude = Number($(this).find('input[name="forceStart"]').val());
+                                force1.EndMagnitude = Number($(this).find('input[name="forceStart"]').val());
+                                force1.StartLocation = Number($(this).find('input[name="startLoc"]').val());
+                                force1.EndLocation = Number($(this).find('input[name="endLoc"]').val());
+                                Beam.addForce(force1);
+                                Beam.addMomGraph(force1);
+                            }
+
+                        }
+                        // TRAPEZOID DECREASING
+
+                        else if (Number($(this).find('input[name="forceEnd"]').val()) < Number($(this).find('input[name="forceStart"]').val()))
+
+                        {
+                            if (Number($(this).find('input[name="endLoc"]').val()) !== Number($('#beamlength').val())) // IF ENDS BEFORE
+                            {
+
+
+
+                                var force = Object.create(DistributedForce); // ADD FORCE TRIANGULAR TILL END
+                                force.StartMagnitude = 0;
+                                tri = ((Number($('#beamlength').val()))
+                                        - Number($(this).find('input[name="startLoc"]').val())) *
+                                        (Number($(this).find('input[name="forceEnd"]').val()) - Number($(this).find('input[name="forceStart"]').val())) /
+                                        (Number($(this).find('input[name="endLoc"]').val()) -
+                                                Number($(this).find('input[name="startLoc"]').val()));
+                                force.EndMagnitude = ((Number($('#beamlength').val()))
+                                        - Number($(this).find('input[name="startLoc"]').val())) *
+                                        (Number($(this).find('input[name="forceEnd"]').val()) - Number($(this).find('input[name="forceStart"]').val())) /
+                                        (Number($(this).find('input[name="endLoc"]').val()) -
+                                                Number($(this).find('input[name="startLoc"]').val()));
+                                force.StartLocation = Number($(this).find('input[name="startLoc"]').val());
+                                force.EndLocation = Number($('#beamlength').val());
+                                Beam.addForce(force);
+                                Beam.addMomGraph(force);
+
+                                var forceCompensate1 = Object.create(DistributedForce); // DEDUCT LEFTOVER FORCE Rectangular
+                                forceCompensate1.StartMagnitude = -(Number($(this).find('input[name="forceEnd"]').val()) - Number($(this).find('input[name="forceStart"]').val()));
+                                forceCompensate1.EndMagnitude = -(Number($(this).find('input[name="forceEnd"]').val()) - Number($(this).find('input[name="forceStart"]').val()));
+                                ;
+                                forceCompensate1.StartLocation = Number($(this).find('input[name="endLoc"]').val());
+                                forceCompensate1.EndLocation = Number($('#beamlength').val());
+                                Beam.addForce(forceCompensate1);
+                                Beam.addMomGraph(forceCompensate1);
+
+                                //DEDUCT TRIANGLE
+
+                                var forceCompensate2 = Object.create(DistributedForce); // DEDUCT LEFTOVER FORCE Triangular
+                                forceCompensate2.StartMagnitude = 0;
+                                forceCompensate2.EndMagnitude = -(tri - (Number($(this).find('input[name="forceEnd"]').val()) - Number($(this).find('input[name="forceStart"]').val())));
+                                forceCompensate2.StartLocation = Number($(this).find('input[name="endLoc"]').val());
+                                forceCompensate2.EndLocation = Number($('#beamlength').val());
+                                Beam.addForce(forceCompensate2);
+                                Beam.addMomGraph(forceCompensate2);
+
+
+                                //ADD Full rectange
+
+                                var forceCompensate3 = Object.create(DistributedForce); // DEDUCT LEFTOVER FORCE Rectangular
+                                forceCompensate3.StartMagnitude = (Number($(this).find('input[name="forceStart"]').val()));
+                                forceCompensate3.EndMagnitude = (Number($(this).find('input[name="forceStart"]').val()));
+                                forceCompensate3.StartLocation = Number($(this).find('input[name="startLoc"]').val());
+                                forceCompensate3.EndLocation = Number($('#beamlength').val());
+                                Beam.addForce(forceCompensate3);
+                                Beam.addMomGraph(forceCompensate3);
+
+                                // DEDUCT RECTANGLE
+
+                                var forceCompensate4 = Object.create(DistributedForce); // DEDUCT LEFTOVER FORCE Rectangular
+                                forceCompensate4.StartMagnitude = -(Number($(this).find('input[name="forceStart"]').val()));
+                                forceCompensate4.EndMagnitude = -(Number($(this).find('input[name="forceStart"]').val()));
+                                forceCompensate4.StartLocation = Number($(this).find('input[name="endLoc"]').val());
+                                forceCompensate4.EndLocation = Number($('#beamlength').val());
+                                Beam.addForce(forceCompensate4);
+                                Beam.addMomGraph(forceCompensate4);
+
+
+                            } else {
+                                var force = Object.create(DistributedForce);
+                                force.StartMagnitude = 0;
+                                force.EndMagnitude = Number($(this).find('input[name="forceEnd"]').val()) - Number($(this).find('input[name="forceStart"]').val());
+                                force.StartLocation = Number($(this).find('input[name="startLoc"]').val());
+                                force.EndLocation = Number($(this).find('input[name="endLoc"]').val());
+                                Beam.addForce(force);
+                                Beam.addMomGraph(force);
+
+                                var force1 = Object.create(DistributedForce);
+                                force1.StartMagnitude = Number($(this).find('input[name="forceStart"]').val());
+                                force1.EndMagnitude = Number($(this).find('input[name="forceStart"]').val());
+                                force1.StartLocation = Number($(this).find('input[name="startLoc"]').val());
+                                force1.EndLocation = Number($(this).find('input[name="endLoc"]').val());
+                                Beam.addForce(force1);
+                                Beam.addMomGraph(force1);
+
+                            }
+
+                        }
+
+
+
+
+
+                    }
+
+                });
+                var support1 = Object.create(Support);
+                support1.location = Number($('#support1').val());
+                Beam.addSupport(support1);
+                var support2 = Object.create(Support);
+                support2.location = Number($('#support2').val());
+                Beam.addSupport(support2);
+                var force = Object.create(PointForce); // calculated force
+                force.absmagnitude = Beam.forceSupportLeft();
+                force.StartLocation = support1.location;
+                force.angle = 90;
+                var forceLL = Object.create(PointForce); // calculated force
+                forceLL.absmagnitude = Beam.forceSupportRight();
+                forceLL.StartLocation = support2.location;
+                forceLL.angle = 90;
+
+
+                sup1Loc = force.StartLocation;
+                sup1Mag = force.absmagnitude;
+
+                sup2Loc = forceLL.StartLocation;
+                sup2Mag = forceLL.absmagnitude;
+
+
+                Beam.length = $('#beamlength').val();
+                JXG.Options.axis.ticks.majorHeight = 60;
+                JXG.Options.axis.ticks.insertTicks = false;
+                JXG.Options.axis.ticks.ticksDistance = 10;
+                bl = Beam.length;
+                beamGraph = JXG.JSXGraph.initBoard('jxgbox', {boundingbox: [-0.2, bl * 3 / 14, Number(Beam.length) + 0.1 * Number(Beam.length), -bl * 3 / 14],
+                    axis: false, grid: false, showCopyright: false, registerEvents: false, showNavigation: false, needsRegularUpdate: true});
+                var line_connect = beamGraph.create('line', [[0, 0],
+                    [Beam.length, 0]], {straightFirst: false, straightLast: false,
+                    strokeWidth: 10, strokeColor: '#9932CC'});
+                // ADD SUPPORT DOTS    
+
+                sup1 = $('#support1').val();
+                p2 = beamGraph.create('point', [sup1, -0.05], {name: '', face: '^', size: 7, color: '#black'});
+                sup2 = $('#support2').val();
+                p3 = beamGraph.create('point', [sup2, -0.05], {name: '', color: '#black', size: 5});
+
+                // add forces
+
+                var maxvalue = 0;
+                var minvalue = 0;
+                $('.dataConcentrated').each(function (i, e) {
+
+                    minvalue = Math.min(Number($(this).find('input[name="forceMag"]').val()), minvalue);
+                    maxvalue = Math.max(Number($(this).find('input[name="forceMag"]').val()), maxvalue);
+
+                });
+
+                $('.dataDistributed').each(function (i, e) {
+
+                    minvalue = Math.min(Number($(this).find('input[name="forceStart"]').val()), minvalue);
+                    minvalue = Math.min(Number($(this).find('input[name="forceEnd"]').val()), minvalue);
+                    maxvalue = Math.max(Number($(this).find('input[name="forceStart"]').val()), maxvalue);
+                    maxvalue = Math.max(Number($(this).find('input[name="forceEnd"]').val()), maxvalue);
+
+                });
+                minvalue = Math.min(sup1Mag, minvalue);
+                minvalue = Math.min(sup2Mag, minvalue);
+                maxvalue = Math.max(sup1Mag, maxvalue);
+                maxvalue = Math.max(sup2Mag, maxvalue);
+
+
+                adjust = bl * 150 / 750;
+                scalepos = maxvalue / adjust;
+                scaleneg = Math.abs(minvalue / adjust);
+                scale = Math.max(scalepos, scaleneg);
+                scale = Math.max(scalepos, scaleneg);
+
+                scale = Math.max(scalepos, scaleneg);
+                $('.dataConcentrated').each(function (i, e) {
+
+                    a = Number($(this).find('input[name="forceMag"]').val());
+                    d = a / scale;
+                    b = Number($(this).find('input[name="forceLoc"]').val());
+                    angle = Number($(this).find('input[name="forceAng"]').val());
+                    x = d * Math.cos(angle * Math.PI / 180);
+                    y = d * Math.sin(angle * Math.PI / 180);
+
+
+
+                    if (a !== 0) {
+                        beamGraph.create('arrow', [[b + x, -y], [b, 0]], {strokeColor: 'red', strokeWidth: 5});
+                        beamGraph.create('text', [b + x, -y,
+                            function () {
+                                return  " " + " " + a;
+                            }], {strokeColor: 'red', fontSize: 20});
+                    }
+                });
+
+                $('.Moment').each(function (i, e) {
+                    a = Number($(this).find('input[name="momentLoc"]').val());
+                    c = Number($(this).find('input[name="momentMag"]').val());
+
+                    b = Number($('#beamlength').val()) / 30;
+                    if (a !== 0) {
+                        p1 = beamGraph.create('point', [a, 0], {name: '', visible: true, color: "blue"});
+                        p2 = beamGraph.create('point', [a + b, 0], {name: '', visible: false});
+                        p3 = beamGraph.create('point', [a, -b], {name: '', visible: false});
+                        if (c > 0) {
+                            beamGraph.create('arc', [p1, p2, p3],
+                                    {strokeColor: 'blue', firstArrow: false, lastArrow: true, strokeWidth: 4});
+                            beamGraph.create('text', [a + b / 2, -b,
+                                function () {
+                                    return  c;
+                                }], {strokeColor: 'blue', fontSize: 20});
+                        } else {
+                            beamGraph.create('arc', [p1, p2, p3],
+                                    {strokeColor: 'blue', firstArrow: true, lastArrow: false, strokeWidth: 4});
+                            beamGraph.create('text', [a + b / 2, -b,
+                                function () {
+                                    return  -c;
+                                }], {strokeColor: 'blue', fontSize: 20});
+                        }
+                    }
+
+                });
+
+                $('.dataDistributed').each(function (i, e) {
+
+                    k = Number($(this).find('input[name="forceStart"]').val());
+                    l = Number($(this).find('input[name="forceEnd"]').val());
+                    ll = Number($(this).find('input[name="forceStart"]').val() / scale);
+                    a = Number($(this).find('input[name="forceStart"]').val() / scale);
+                    b = Number($(this).find('input[name="forceEnd"]').val()) / scale;
+                    c = Number($(this).find('input[name="startLoc"]').val());
+                    d = Number($(this).find('input[name="endLoc"]').val());
+                    slope = -(a - b) / (d - c);
+                    if ((k + l) !== 0) {
+                        beamGraph.create('text', [c, -a,
+                            function () {
+                                return  " " + " " + k;
+                            }], {color: 'orange', fontSize: 20});
+                        for (i = c; i <= d; i += 0.3)
+                        {
+                            beamGraph.create('arrow', [[i, -a], [i, 0]], {dash: 6, strokeWidth: 1, color: 'orange'});
+                            a = a + slope * 0.3;
+                        }
+                        ;
+                        beamGraph.create('line', [[c, -ll], [d, -b]],
+                                {straightFirst: false, straightLast: false, color: 'orange', strokeWidth: 1});
+                        beamGraph.create('text', [d, -b,
+                            function () {
+                                return  " " + "   " + l;
+                            }], {color: 'orange', fontSize: 20});
+                    }
+                });
+
+
+
+                beamGraph.create('arrow', [[sup1Loc, -sup1Mag / scale], [sup1Loc, 0]], {strokeColor: 'green', strokeWidth: 5});
+                beamGraph.create('text', [sup1Loc, -sup1Mag / scale,
+                    function () {
+                        text = Math.round(sup1Mag * 100) / 100;
+                        return  " " + " " + text;
+                    }], {strokeColor: 'green', fontSize: 20});
+
+                beamGraph.create('arrow', [[sup2Loc, -sup2Mag / scale], [sup2Loc, 0]], {strokeColor: 'green', strokeWidth: 5});
+                beamGraph.create('text', [sup2Loc, -sup2Mag / scale,
+                    function () {
+                        text = Math.round(sup2Mag * 100) / 100;
+                        return  " " + " " + text;
+                    }], {strokeColor: 'green', fontSize: 20});
+
+                Beam.addForce(forceLL);
+                Beam.addMomGraph(forceLL);
+
+                Beam.addForce(force);
+                Beam.addMomGraph(force);
+
+                var forceEND = Object.create(PointForce); // calculated force
+                forceEND.absmagnitude = 0;
+                forceEND.StartLocation = Number($('#beamlength').val());
+                forceEND.angle = 90;
+                Beam.addForce(forceEND);
+
+                var MomentEND = Object.create(Moment); // calculated force
+                MomentEND.Magnitude = 0;
+                MomentEND.StartLocation = Number($('#beamlength').val());
+                Beam.addMomGraph(MomentEND);
+
+                Beam.listForces.sort(
+                        function (a, b) {
+                            return a.StartLocation > b.StartLocation;
+                        });
+
+                Beam.listMomGraph.sort(
+                        function (a, b) {
+                            return a.StartLocation > b.StartLocation;
+                        });
+
+
+                //Decide on highest Value of Shear Function
+                d = -1000000;
+                z = 100000;
+                for (var i = 0; i < Beam.listForces.length - 1; i++)
+                {
+                    function  graphValue(x) {
+                        var graphForce = 0;
+                        for (var j = i; j >= 0; j--)
+                        {
+                            graphForce += Beam.listForces[j].shearfunction(x);
+                        }
+                        return graphForce;
+                    }
+                    ;
+                    b = graphValue([Beam.listForces[i].StartLocation]);
+                    c = graphValue([Beam.listForces[i + 1].StartLocation]);
+                    e = Math.max(b, c);
+                    d = Math.max(d, e);
+                    x = Math.min(b, c);
+                    z = Math.min(z, x);
+                }
+                ;
+                //CREATE SHEAR GRAPH
+                //var shearGraph;
+                //shearGraph = JXG.JSXGraph.freeBoard(sheargraph);
+
+                var shearGraph = JXG.JSXGraph.initBoard('jxgbox1', {boundingbox: [-0.2, d + 0.1 * d + 5, Number(Beam.length) + 0.1 * Number(Beam.length), z + 0.1 * z],
+                    axis: false, showCopyright: false, registerEvents: false, showNavigation: false, needsupdate: true});
+                $( "#unitsForce" ).val();             
+               unitForce = $( "#unitsForce option:selected" ).text();
+                
+               $( "#unitsLength" ).val();             
+               unitLength = $( "#unitsLength option:selected" ).text(); 
+        var yaxis = shearGraph.create('axis', [[0, 0], [0, 1]],{name:unitForce  , 
+			withLabel: true, 
+			label: {position: 'rt',offset: [10, -5] 
+					 } 
+			});
+                
+                
+                var xaxis = shearGraph.create('axis', [[0, 0], [1, 0]],{name:unitLength , 
+			withLabel: true, 
+			label: {position: 'rt',offset: [-15, 10] 
+					 } 
+			});
+                yaxis.removeAllTicks();
+                xaxis.removeAllTicks();
+                for (var i = 0; i < Beam.listForces.length - 1; i++) {
+                    
+                    var s1 = shearGraph.create('functiongraph', [
+                        function (x) {
+                            var graphForce = 0;
+                            for (var j = i; j >= 0; j--)
+                            {
+                                graphForce += Beam.listForces[j].shearfunction(x);
+                            }
+
+                            return graphForce;
+                            
+                            
+                        },
+                        Beam.listForces[i].StartLocation, Beam.listForces[i + 1].StartLocation
+
+                    ], {strokeColor: '#9932CC', strokeWidth: 2});
+                    
+                    
+                    var k1 = shearGraph.create('integral', [[Beam.listForces[i].StartLocation + 0.0002,
+                            Beam.listForces[i + 1].StartLocation - 0.0002], s1], {fillColor: '#E7A1B0', withLabel: false, curveLeft: {// Start point
+                            visible: false,
+                            withLabel: false,
+                            layer: 9
+
+                        }, curveRight: {// End point
+                            visible: false,
+                            withLabel: false,
+                            layer: 9
+                        }}
+                    );
+                }
+
+                ;
+
+                //CONNECTING LINES
+
+                for (var i = 0; i < Beam.listForces.length - 1; i++) {
+                    function  graphValuefirst(x) {
+                        var graphForce = 0;
+                        for (var j = i; j >= 0; j--)
+                        {
+                            graphForce += Beam.listForces[j].shearfunction(x);
+                        }
+                        return graphForce;
+                    }
+                    ;
+                    df = 0;
+
+                    for (j = Beam.listForces[i].StartLocation; j < Beam.listForces[i + 1].StartLocation; j++)
+                    {
+                        df = Math.max(graphValuefirst(j), df);
+                    }
+
+
+                    b = graphValuefirst(Beam.listForces[i + 1].StartLocation);
+                    if (b !== 0) {
+                        var dasshed_line1 = shearGraph.create('line', [[Beam.listForces[i + 1].StartLocation, b],
+                            [0, b]], {straightFirst: false, straightLast: false,
+                            dash: 2, strokeColor: 'purple'});
+                        var dasshed_line11 = shearGraph.create('line', [[Beam.listForces[i + 1].StartLocation, b],
+                            [Beam.listForces[i + 1].StartLocation, 0]], {straightFirst: false, straightLast: false,
+                            dash: 2, strokeColor: 'purple'});
+
+                    }
+
+
+                    shearGraph.create('ticks', [yaxis, [b]], {strokeColor: 'blue', majorHeight: 15, drawLabels: true});
+                    shearGraph.create('ticks', [xaxis, [Beam.listForces[i + 1].StartLocation]], {strokeColor: 'blue', majorHeight: 15, drawLabels: true});
+
+                    function  graphValuesecond(x) {
+                        var graphForce = 0;
+                        for (var j = i + 1; j >= 0; j--)
+                        {
+                            graphForce += Beam.listForces[j].shearfunction(x);
+                        }
+                        return graphForce;
+                    }
+                    ;
+
+                    //find max within function
+
+
+
+                    a = graphValuesecond(Beam.listForces[i + 1].StartLocation);
+                    shearGraph.create('ticks', [yaxis, [a]], {strokeColor: 'blue', majorHeight: 15, drawLabels: true});
+                    shearGraph.create('ticks', [xaxis, [Beam.listForces[i + 1].StartLocation]], {strokeColor: 'blue', majorHeight: 15, drawLabels: true});
+
+                    var line_connect = shearGraph.create('line', [[Beam.listForces[i + 1].StartLocation, b],
+                        [Beam.listForces[i + 1].StartLocation, a]], {straightFirst: false, straightLast: false,
+                        strokeWidth: 2, strokeColor: '#9932CC'});
+
+                    if (a !== 0) {
+                        var dasshed_line2 = shearGraph.create('line', [[Beam.listForces[i + 1].StartLocation, a],
+                            [0, a]], {straightFirst: false, straightLast: false,
+                            dash: 2, strokeColor: 'purple'});
+                        var dasshed_line22 = shearGraph.create('line', [[Beam.listForces[i + 1].StartLocation, a],
+                            [Beam.listForces[i + 1].StartLocation, 0]], {straightFirst: false, straightLast: false,
+                            dash: 2, strokeColor: 'purple'});
+
+                    }
+
+                }
+
+                //Decide on highest Value of Moment Function
+                dd = -1000000;
+                zz = 100000;
+                for (var i = 0; i < Beam.listMomGraph.length - 1; i++)
+                {
+                    function  graphValue(x) {
+                        var graphForce = 0;
+                        for (var j = i; j >= 0; j--)
+                        {
+                            graphForce += Beam.listMomGraph[j].momentfunction(x);
+                        }
+                        return graphForce;
+                    }
+                    ;
+                    for (x = Beam.listMomGraph[i].StartLocation; x < Beam.listMomGraph[i + 1].StartLocation; x++)
+                    {
+                        dd = Math.max(dd, graphValue(x));
+                    }
+
+                    for (x = Beam.listMomGraph[i].StartLocation; x < Beam.listMomGraph[i + 1].StartLocation; x++)
+                    {
+                        zz = Math.min(zz, graphValue(x));
+                    }
+                    bb = graphValue([Beam.listMomGraph[i].StartLocation]);
+
+                    cc = graphValue([Beam.listMomGraph[i + 1].StartLocation]);
+
+                    ee = Math.max(bb, cc);
+
+                    dd = Math.max(dd, ee);
+
+                    xx = Math.min(bb, cc);
+
+                    zz = Math.min(zz, xx);
+
+                }
+                ;
+                // graph Moment  
+                
+                var momentGraph = JXG.JSXGraph.initBoard('jxgbox2', {boundingbox: [-0.2, dd + 0.1 * dd + 10, Number(Beam.length) + 0.1 * Number(Beam.length), zz + 0.1 * zz - 10],
+                    showCopyright: false,
+                    axis: false, registerEvents: false, showNavigation: false});
+               $( "#unitsForce" ).val();             
+               unitForce = $( "#unitsForce option:selected" ).text();
+                
+               $( "#unitsLength" ).val();             
+               unitLength = $( "#unitsLength option:selected" ).text(); 
+               
+                var y1axis = momentGraph.create('axis', [[0, 0], [0, 1]],{name:unitForce + '~' +unitLength , 
+			withLabel: true, 
+			label: {position: 'rt',offset: [10, -5] 
+					 } 
+			});
+                y1axis.removeAllTicks();
+                var x1axis = momentGraph.create('axis', [[0, 0], [1, 0]],{name:unitLength, 
+			withLabel: true, 
+			label: {position: 'rt',offset: [-15, 10]
+					 }
+			});
+                x1axis.removeAllTicks();
+                for (var i = 0; i < Beam.listMomGraph.length - 1; i++)
+                {
+                    var c1 = momentGraph.create('functiongraph', [
+                        function (x) {
+                            var graphForce = 0;
+                            for (var j = i; j >= 0; j--)
+                            {
+                                graphForce += Beam.listMomGraph[j].momentfunction(x);
+                            }
+                            return graphForce;
+                        }, Beam.listMomGraph[i].StartLocation, Beam.listMomGraph[i + 1].StartLocation
+
+                    ],
+                            {strokeColor: '#9932CC', strokeWidth: 2, highligtFillOpacity: 0, highligtStrokeWidth: 0, highlight: false});
+
+                    momentGraph.create('integral', [[Beam.listMomGraph[i].StartLocation + 0.0002,
+                            Beam.listMomGraph[i + 1].StartLocation - 0.0002], c1], {fillColor: '#E7A1B0', withLabel: false, strokeWidth: 2, highlight: false, curveLeft: {// Start point
+                            visible: false,
+                            fixed: true
+
+                        }, curveRight: {// End point
+                            visible: false,
+                            fixed: true
+                        }});
+
+                }
+
+                // Connect Lines
+
+                for (var i = 0; i < Beam.listMomGraph.length - 1; i++) {
+                    function  graphValuefirst(x) {
+                        var graphForce = 0;
+                        for (var j = i; j >= 0; j--)
+                        {
+                            graphForce += Beam.listMomGraph[j].momentfunction(x);
+                        }
+                        return graphForce;
+                    }
+                    ;
+
+                    df = 0;
+                    var newX;
+                    for (j = Beam.listMomGraph[i].StartLocation; j < Beam.listMomGraph[i + 1].StartLocation; j += 0.02)
+                    {
+                        if (graphValuefirst(j) > df) {
+                            newX = j;
+                        }
+                        df = Math.max(graphValuefirst(j), df);
+
+
+                    }
+
+                    b = graphValuefirst(Beam.listMomGraph[i + 1].StartLocation);
+                    if (b !== 0)
+                    {
+                        var dasshed_line1 = momentGraph.create('line', [[Beam.listMomGraph[i + 1].StartLocation, b],
+                            [0, b]], {straightFirst: false, straightLast: false,
+                            dash: 2, strokeColor: 'purple'});
+                        var dasshed_line11 = momentGraph.create('line', [[Beam.listMomGraph[i + 1].StartLocation, b],
+                            [Beam.listMomGraph[i + 1].StartLocation, 0]], {straightFirst: false, straightLast: false,
+                            dash: 2, strokeColor: 'purple'});
+
+                    }
+                    if (df !== 0 && df !== b)
+                    {
+                        var dasshed_lineX = momentGraph.create('line', [[newX, df],
+                            [0, df]], {straightFirst: false, straightLast: false,
+                            dash: 2, strokeColor: 'purple'});
+                        var dasshed_lineXX = momentGraph.create('line', [[newX, df],
+                            [newX, 0]], {straightFirst: false, straightLast: false,
+                            dash: 2, strokeColor: 'purple'});
+                        momentGraph.create('ticks', [y1axis, [df]], {strokeColor: 'blue', majorHeight: 15, drawLabels: true});
+                        momentGraph.create('ticks', [x1axis, [newX]], {strokeColor: 'blue', majorHeight: 15, drawLabels: true});
+                    }
+
+                    momentGraph.create('ticks', [y1axis, [b]], {strokeColor: 'blue', majorHeight: 15, drawLabels: true});
+                    function  graphValuesecond(x) {
+                        var graphForce = 0;
+                        for (var j = i + 1; j >= 0; j--)
+                        {
+                            graphForce += Beam.listMomGraph[j].momentfunction(x);
+                        }
+                        return graphForce;
+                    }
+                    ;
+                    a = graphValuesecond(Beam.listMomGraph[i + 1].StartLocation);
+                    if (a !== 0) {
+                        var dasshed_line2 = momentGraph.create('line', [[Beam.listMomGraph[i + 1].StartLocation, a],
+                            [0, a]], {straightFirst: false, straightLast: false,
+                            dash: 2, strokeColor: 'purple'});
+                        var dasshed_line22 = momentGraph.create('line', [[Beam.listMomGraph[i + 1].StartLocation, a],
+                            [Beam.listMomGraph[i + 1].StartLocation, 0]], {straightFirst: false, straightLast: false,
+                            dash: 2, strokeColor: 'purple'});
+                    }
+
+                    momentGraph.create('ticks', [y1axis, [a]], {strokeColor: 'blue', majorHeight: 15, drawLabels: true});
+                    momentGraph.create('ticks', [x1axis, [Beam.listMomGraph[i + 1].StartLocation]], {strokeColor: 'blue', majorHeight: 15, drawLabels: true});
+
+                    var line_connect = momentGraph.create('line', [[Beam.listMomGraph[i + 1].StartLocation, b],
+                        [Beam.listMomGraph[i + 1].StartLocation, a]], {straightFirst: false, straightLast: false,
+                        strokeWidth: 2, strokeColor: '#9932CC', highlightStrokeWidth: 0});
+                }
+
+            });
+
+        </script>    
+    </body>
+</html>
